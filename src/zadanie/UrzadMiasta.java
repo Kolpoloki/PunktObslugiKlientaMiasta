@@ -42,7 +42,7 @@ public class UrzadMiasta implements Wnioski {
         if (id < 0 || id >= sprawy.size()) return null;
         return sprawy.get(id);
     }
-    public Obywatel ZnajdzObywatela(int id) {
+    public Obywatel znajdzObywatela(int id) {
         if (id < 0 || id >= obywatele.size()) return null;
         return obywatele.get(id);
     }
@@ -103,6 +103,14 @@ public class UrzadMiasta implements Wnioski {
 
     public void sprawdzPostep(Sprawa sprawa) {
         System.out.println("Status sprawy "+sprawa.getOpis()+" jest: "+sprawa.getStatus());
+    }
+
+    public List<Sprawa> getSprawy() {
+        return sprawy;
+    }
+
+    public List<Obywatel> getObywatele() {
+        return obywatele;
     }
 
     @Override

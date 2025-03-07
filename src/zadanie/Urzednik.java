@@ -16,12 +16,8 @@ public class Urzednik extends Obywatel{
         this.stanowisko = stanowisko;
     }
 
-    public String getStanowisko() {
-        return stanowisko;
-    }
-
     @Override
     public String toString() {
-        return super.toString()+"stanosisko="+stanowisko;
+        return super.toString()+"stanowisko="+stanowisko;
     }
 }

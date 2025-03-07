@@ -1,14 +1,15 @@
 package zadanie;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     public static Scanner scanner = new Scanner(System.in);
+    static UrzadMiasta urzad = new UrzadMiasta();
 
     public static void main(String[] args) {
-        UrzadMiasta urzad = new UrzadMiasta();
 
         Obywatel ob1 = new Obywatel("Jan", "Kowalski", "ul. Warszawska 1", "123456789");
         Obywatel ob2 = new Obywatel("Anna", "Nowak", "ul. Krakowska 2", "987654321");
@@ -24,6 +25,9 @@ public class Main {
         Urzednik urz1 = new Urzednik("Marek", "Lewandowski", "Biuro Paszportów");
         Urzednik urz2 = new Urzednik("Magdalena", "Wójcik", "Dział Rejestracji");
         Urzednik urz3 = new Urzednik("Tomasz", "Kaczmarek", "Dział Podatkowy");
+        urzad.dodajObywatela(urz1);
+        urzad.dodajObywatela(urz2);
+        urzad.dodajObywatela(urz3);
 
         Platnosc pl1 = new Platnosc(200, RodzajPlatnosci.KARTA, Status.ZLOZONA);
         Platnosc pl2 = new Platnosc(150, RodzajPlatnosci.GOTOWKA, Status.ZLOZONA);
@@ -73,17 +77,18 @@ public class Main {
         urzad.sprawdzPostep(sp4);
         urzad.sprawdzPostep(sp5);
 
-        List<Obywatel> znalezieni = urzad.znajdzObywatela("Nowak", "nazwisko");
+        List<Obywatel> znalezieni = urzad.znajdzObywatela("Kaczmarek", "nazwisko");
         if (!znalezieni.isEmpty()) {
             System.out.println("Znalezieni obywatele:");
             for (Obywatel obywatel : znalezieni) System.out.println(obywatel);
-        }
+        } else System.out.println("Nie znaleziono obywatelów");
 
         List<Sprawa> sprawyZToku = urzad.znajdzSprawe(Status.W_TRAKCIE);
         System.out.println("Sprawy w trakcie:");
         for (Sprawa sprawa : sprawyZToku) {
             System.out.println(sprawa);
         }
+        if (sprawyZToku.isEmpty()) System.out.println("Nie znaleziono spraw");
 
         ob1.sprawdzWaznoscDokumentu(ob1.ZnajdzDokument(RodzajDokumentu.DOWOD_OSOBISTY));
         ob2.sprawdzWaznoscDokumentu(ob2.ZnajdzDokument(RodzajDokumentu.PRAWO_JAZDY));
@@ -161,11 +166,11 @@ public class Main {
         String opis1 = scanner.nextLine();
 
         RodzajDokumentu rodzajDokumentu1 = null;
-        while (rodzajDokumentu == null) {
+        while (rodzajDokumentu1 == null) {
             System.out.print("Rodzaj dokumentu (PASZPORT, DOWOD_OSOBISTY, PRAWO_JAZDY, DOWOD_REJESTRACYJNY, LEGITYMACJA_SZKOLNA, LEGITYMACJA_STUDENCKA): ");
             String rodzajStr = scanner.nextLine().toUpperCase();
             if (RodzajDokumentu.czyPoprawny(rodzajStr)) {
-                rodzajDokumentu = RodzajDokumentu.valueOf(rodzajStr);
+                rodzajDokumentu1 = RodzajDokumentu.valueOf(rodzajStr);
             } else {
                 System.out.println("Niepoprawny rodzaj dokumentu. Spróbuj ponownie.");
             }
@@ -212,12 +217,213 @@ public class Main {
         Sprawa sprawa = new Sprawa(obywatel, sprawaOpis, dataZlozenia, platnoscStatus, platnosc);
 
         System.out.println("\nStworzono Obywatel: " + obywatel);
+        urzad.dodajObywatela(obywatel);
         System.out.println("Stworzono Dokument: " + dokument);
         System.out.println("Stworzono Urzednik: " + urzednik);
+        urzad.dodajObywatela(urzednik);
         System.out.println("Stworzono Platnosc: " + platnosc);
         System.out.println("Stworzono Sprawa: " + sprawa);
+        urzad.dodajSprawe(sprawa);
 
 
+        // Skanery wer.2
+        String odp;
+        do {
+            System.out.println("Wybierz obiekt na którym chcesz działać (1-Obywatel, 2-Sprawa):");
+            int wybor = zwrocOdpowiedniaLiczbe(2);
+            switch (wybor) {
+                case 1 -> {
+                    System.out.println("Możliwe działania(1-dodaj obywatela,2-usun obywatela,3-znajdz obywatela):");
+                    wybor = zwrocOdpowiedniaLiczbe(3);
+                    switch (wybor) {
+                        case 1 -> {
+                            dodajObywatela();
+                        }
+                        case 2 -> {
+                            int iloscObywatelow = urzad.getObywatele().size();
+                            for (int i = 1; i <= iloscObywatelow; i++) {
+                                System.out.println(i + urzad.znajdzObywatela(i-1).toString());
+                            }
+                            System.out.println("Ilość obywatelów:"+iloscObywatelow);
+                            wybor=zwrocOdpowiedniaLiczbe(iloscObywatelow)-1;
+                            urzad.usunSprawe(wybor);
+                        }
+                        case 3 -> {
+                            System.out.println("Podaj argument według którego szukać obywatela(imie,nazwisko,adres,telefon:");
+                            String arg = scanner.nextLine();
+                            System.out.println("Podaj jego wartość:");
+                            String wartosc = scanner.nextLine();
+                            urzad.znajdzObywatela(wartosc,arg);
+                        }
 
+                    }
+                }
+                case 2 -> {
+                    System.out.println("Możliwe działania(1-dodaj sprawe,2-usun sprawe, 3- znajdz sprawe):");
+                    wybor = zwrocOdpowiedniaLiczbe(3);
+                    switch (wybor) {
+                        case 1 -> {
+                            dodajSprawe();
+                        }
+                        case 2 -> {
+                            int iloscSpraw = urzad.getSprawy().size();
+                            System.out.println("Ilość spraw:"+iloscSpraw);
+                            for (int i = 1; i <= iloscSpraw; i++) {
+                                System.out.println(i + urzad.znajdzSprawe(i-1).toString());
+                            }
+                            wybor=zwrocOdpowiedniaLiczbe(iloscSpraw)-1;
+                            urzad.usunSprawe(wybor);
+                        }
+                        case 3 -> {
+                            System.out.println("Podaj argument według którego szukać sprawę(status,opis,data:");
+                            String arg = scanner.nextLine();
+                            znajdzSprawe(arg);
+                        }
+                    }
+                }
+            }
+            System.out.println("Czy kontynuować?(T/N)");
+            odp = scanner.nextLine();
+        } while (!odp.equalsIgnoreCase("T"));
     }
+    public static int zwrocOdpowiedniaLiczbe (int max){
+        int wybor;
+        do {
+            while (!scanner.hasNextInt()) {
+                System.out.println("Niepoprawna opcja! Spróbuj ponownie.");
+                scanner.next();
+            }
+            wybor = scanner.nextInt();
+
+            if (wybor < 1 || wybor > max) System.out.printf("Niepoprawna opcja. Wybierz liczbę między 1 a %d.\n",max);
+        } while (wybor < 1 || wybor > max);
+        return wybor;
+    }
+    public static void dodajObywatela(){
+        System.out.println("Podaj szczegóły obywatela:");
+        System.out.print("Imie: ");
+        String imie = scanner.nextLine();
+        System.out.print("Nazwisko: ");
+        String nazwisko = scanner.nextLine();
+        System.out.print("Adres: ");
+        String adres = scanner.nextLine();
+        System.out.print("Telefon: ");
+        String telefon = scanner.nextLine();
+
+        System.out.println("Podaj szczegóły dokumentu:");
+        System.out.print("Numer: ");
+        String numer = scanner.nextLine();
+        System.out.print("Data wydania (yyyy-mm-dd): ");
+        String dataWydaniaStr = scanner.nextLine();
+        LocalDate dataWydania = LocalDate.parse(dataWydaniaStr);
+        System.out.print("Data ważności (yyyy-mm-dd): ");
+        String dataWaznosciStr = scanner.nextLine();
+        LocalDate dataWaznosci = LocalDate.parse(dataWaznosciStr);
+        System.out.print("Opis: ");
+        String opis = scanner.nextLine();
+
+        RodzajDokumentu rodzajDokumentu = null;
+        while (rodzajDokumentu == null) {
+            System.out.print("Rodzaj dokumentu (PASZPORT, DOWOD_OSOBISTY, PRAWO_JAZDY, DOWOD_REJESTRACYJNY, LEGITYMACJA_SZKOLNA, LEGITYMACJA_STUDENCKA): ");
+            String rodzajStr = scanner.nextLine().toUpperCase();
+            if (RodzajDokumentu.czyPoprawny(rodzajStr)) {
+                rodzajDokumentu = RodzajDokumentu.valueOf(rodzajStr);
+            } else {
+                System.out.println("Niepoprawny rodzaj dokumentu. Spróbuj ponownie.");
+            }
+        }
+        Dokument dokument = new Dokument(numer, dataWydania, dataWaznosci, opis, rodzajDokumentu);
+
+        System.out.print("Czy obywatel jest urzędnikiem?(T/N)? ");
+        String odp = scanner.nextLine();
+        if (odp.equalsIgnoreCase("T")){
+            System.out.print("Stanowisko: ");
+            String stanowisko = scanner.nextLine();
+            Urzednik urzednik = new Urzednik(imie, nazwisko, adres, telefon,stanowisko);
+            urzednik.dodajDokument(dokument);
+            urzad.dodajObywatela(urzednik);
+        } else {
+            Obywatel obywatel = new Obywatel(imie, nazwisko, adres, telefon);
+            obywatel.dodajDokument(dokument);
+            urzad.dodajObywatela(obywatel);
+        }
+    }
+
+    public static void dodajSprawe(){
+        System.out.println("Podaj szczegóły płatnośći:");
+        System.out.print("Ilosc: ");
+        double ilosc = scanner.nextDouble();
+        scanner.nextLine();
+        RodzajPlatnosci rodzajPlatnosci = null;
+        while (rodzajPlatnosci == null) {
+            System.out.print("Rodzaj platnosci (KARTA, GOTOWKA, BLIK): ");
+            String platnosciStr = scanner.nextLine().toUpperCase();
+            if (RodzajPlatnosci.czyPoprawny(platnosciStr)) {
+                rodzajPlatnosci = RodzajPlatnosci.valueOf(platnosciStr);
+            } else {
+                System.out.println("Niepoprawny rodzaj płatności. Spróbuj ponownie.");
+            }
+        }
+
+        Status platnoscStatus = null;
+        while (platnoscStatus == null) {
+            System.out.print("Status platnosci (ZLOZONA, W_TRAKCIE, ZREALIZOANA): ");
+            String platnoscStatusStr = scanner.nextLine().toUpperCase();
+            if (Status.czyPoprawny(platnoscStatusStr)) {
+                platnoscStatus = Status.valueOf(platnoscStatusStr);
+            } else {
+                System.out.println("Niepoprawny status płatności. Spróbuj ponownie.");
+            }
+        }
+
+        Platnosc platnosc = new Platnosc(ilosc, rodzajPlatnosci, platnoscStatus);
+
+        System.out.println("Podaj szczegóły wniosku:");
+        System.out.print("Opis: ");
+        String sprawaOpis = scanner.nextLine();
+        System.out.print("Data złożenia (yyyy-mm-dd): ");
+        String dataZlozeniaStr = scanner.nextLine();
+        LocalDate dataZlozenia = LocalDate.parse(dataZlozeniaStr);
+
+        System.out.println("Który obywatel składał sprawę");
+        int iloscObywatelow = urzad.getObywatele().size();
+        for (int i = 1; i <= iloscObywatelow; i++) {
+            System.out.println(i + urzad.znajdzObywatela(i-1).toString());
+        }
+        int wybor=zwrocOdpowiedniaLiczbe(iloscObywatelow)-1;
+        Sprawa sprawa = new Sprawa(urzad.znajdzObywatela(wybor), sprawaOpis, dataZlozenia, platnoscStatus, platnosc);
+        urzad.dodajSprawe(sprawa);
+    }
+
+    public static void znajdzSprawe(String szukanyArgument){
+            switch (szukanyArgument.toLowerCase()) {
+                case "status" -> {
+                    Status status = null;
+                    while (status == null) {
+                        System.out.print("Podaj status (ZLOZONA, W_TRAKCIE, ZREALIZOANA): ");
+                        String statusStr = scanner.nextLine().toUpperCase();
+                        if (Status.czyPoprawny(statusStr)) {
+                            status = Status.valueOf(statusStr);
+                        } else {
+                            System.out.println("Niepoprawny status. Spróbuj ponownie.");
+                        }
+                    }
+                    urzad.znajdzSprawe(status);
+                }
+                case "opis" -> {
+                    System.out.println("Podaj opis:");
+                    String opis = scanner.nextLine();
+                    urzad.znajdzSprawe(opis);
+                }
+                case "data" -> {
+                    System.out.println("Podaj datę (yyyy-mm-dd):");
+                    String dataStr= scanner.nextLine();
+                    LocalDate data= LocalDate.parse(dataStr);
+                    urzad.znajdzSprawe(data);
+                }
+                default -> {
+                    System.out.println("Nieprawdiłowy argument");;
+                }
+            }
+        }
 }
