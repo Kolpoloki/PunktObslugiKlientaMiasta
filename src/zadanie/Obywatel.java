@@ -9,14 +9,13 @@ public class Obywatel implements Dokumentacja{
     private String nazwisko;
     private String adres;
     private String telefon;
-    private List<Dokument> dokumenty;
+    private List<Dokument> dokumenty = new ArrayList<>();
 
     public Obywatel(String imie, String nazwisko, String adres, String telefon) {
         this.imie = imie;
         this.nazwisko = nazwisko;
         this.adres = adres;
         this.telefon = telefon;
-        this.dokumenty = new ArrayList<>();
     }
     public Obywatel(String imie, String nazwisko, String telefon) {
         this.imie = imie;
