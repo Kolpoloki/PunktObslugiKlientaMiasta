@@ -97,5 +97,127 @@ public class Main {
         urzad.usunSprawe(0);
         urzad.usunObywatela(1);
 
+
+        // Skaner
+        System.out.println("Podaj szczegóły obywatela:");
+        System.out.print("Imie: ");
+        String imie = scanner.nextLine();
+        System.out.print("Nazwisko: ");
+        String nazwisko = scanner.nextLine();
+        System.out.print("Adres: ");
+        String adres = scanner.nextLine();
+        System.out.print("Telefon: ");
+        String telefon = scanner.nextLine();
+
+        Obywatel obywatel = new Obywatel(imie, nazwisko, adres, telefon);
+
+        System.out.println("Podaj szczegóły dokumentu:");
+        System.out.print("Numer: ");
+        String numer = scanner.nextLine();
+        System.out.print("Data wydania (yyyy-mm-dd): ");
+        String dataWydaniaStr = scanner.nextLine();
+        LocalDate dataWydania = LocalDate.parse(dataWydaniaStr);
+        System.out.print("Data ważności (yyyy-mm-dd): ");
+        String dataWaznosciStr = scanner.nextLine();
+        LocalDate dataWaznosci = LocalDate.parse(dataWaznosciStr);
+        System.out.print("Opis: ");
+        String opis = scanner.nextLine();
+
+        RodzajDokumentu rodzajDokumentu = null;
+        while (rodzajDokumentu == null) {
+            System.out.print("Rodzaj dokumentu (PASZPORT, DOWOD_OSOBISTY, PRAWO_JAZDY, DOWOD_REJESTRACYJNY, LEGITYMACJA_SZKOLNA, LEGITYMACJA_STUDENCKA): ");
+            String rodzajStr = scanner.nextLine().toUpperCase();
+            if (RodzajDokumentu.czyPoprawny(rodzajStr)) {
+                rodzajDokumentu = RodzajDokumentu.valueOf(rodzajStr);
+            } else {
+                System.out.println("Niepoprawny rodzaj dokumentu. Spróbuj ponownie.");
+            }
+        }
+
+        Dokument dokument = new Dokument(numer, dataWydania, dataWaznosci, opis, rodzajDokumentu);
+        obywatel.dodajDokument(dokument);
+
+        System.out.println("Podaj szczegóły urzędnika:");
+        System.out.print("Imie: ");
+        String urzImie = scanner.nextLine();
+        System.out.print("Nazwisko: ");
+        String urzNazwisko = scanner.nextLine();
+        System.out.print("Telefon: ");
+        String urzTelefon = scanner.nextLine();
+        System.out.print("Stanowisko: ");
+        String stanowisko = scanner.nextLine();
+
+        Urzednik urzednik = new Urzednik(urzImie, urzNazwisko, urzTelefon, stanowisko);
+        System.out.println("Podaj szczegóły dokumentu:");
+        System.out.print("Numer: ");
+        String numer1 = scanner.nextLine();
+        System.out.print("Data wydania (yyyy-mm-dd): ");
+        String dataWydaniaStr1 = scanner.nextLine();
+        LocalDate dataWydania1 = LocalDate.parse(dataWydaniaStr1);
+        System.out.print("Data ważności (yyyy-mm-dd): ");
+        String dataWaznosciStr1 = scanner.nextLine();
+        LocalDate dataWaznosci1 = LocalDate.parse(dataWaznosciStr1);
+        System.out.print("Opis: ");
+        String opis1 = scanner.nextLine();
+
+        RodzajDokumentu rodzajDokumentu1 = null;
+        while (rodzajDokumentu == null) {
+            System.out.print("Rodzaj dokumentu (PASZPORT, DOWOD_OSOBISTY, PRAWO_JAZDY, DOWOD_REJESTRACYJNY, LEGITYMACJA_SZKOLNA, LEGITYMACJA_STUDENCKA): ");
+            String rodzajStr = scanner.nextLine().toUpperCase();
+            if (RodzajDokumentu.czyPoprawny(rodzajStr)) {
+                rodzajDokumentu = RodzajDokumentu.valueOf(rodzajStr);
+            } else {
+                System.out.println("Niepoprawny rodzaj dokumentu. Spróbuj ponownie.");
+            }
+        }
+
+        Dokument dokument1 = new Dokument(numer1, dataWydania1, dataWaznosci1, opis1, rodzajDokumentu1);
+        urzednik.dodajDokument(dokument1);
+
+        System.out.println("Podaj szczegóły płatnośći:");
+        System.out.print("Ilosc: ");
+        double ilosc = scanner.nextDouble();
+        scanner.nextLine();
+        RodzajPlatnosci rodzajPlatnosci = null;
+        while (rodzajPlatnosci == null) {
+            System.out.print("Rodzaj platnosci (KARTA, GOTOWKA, BLIK): ");
+            String platnosciStr = scanner.nextLine().toUpperCase();
+            if (RodzajPlatnosci.czyPoprawny(platnosciStr)) {
+                rodzajPlatnosci = RodzajPlatnosci.valueOf(platnosciStr);
+            } else {
+                System.out.println("Niepoprawny rodzaj płatności. Spróbuj ponownie.");
+            }
+        }
+
+        Status platnoscStatus = null;
+        while (platnoscStatus == null) {
+            System.out.print("Status platnosci (ZLOZONA, W_TRAKCIE, ZREALIZOANA): ");
+            String platnoscStatusStr = scanner.nextLine().toUpperCase();
+            if (Status.czyPoprawny(platnoscStatusStr)) {
+                platnoscStatus = Status.valueOf(platnoscStatusStr);
+            } else {
+                System.out.println("Niepoprawny status płatności. Spróbuj ponownie.");
+            }
+        }
+
+        Platnosc platnosc = new Platnosc(ilosc, rodzajPlatnosci, platnoscStatus);
+
+        System.out.println("Podaj szczegóły wniosku:");
+        System.out.print("Opis: ");
+        String sprawaOpis = scanner.nextLine();
+        System.out.print("Data złożenia (yyyy-mm-dd): ");
+        String dataZlozeniaStr = scanner.nextLine();
+        LocalDate dataZlozenia = LocalDate.parse(dataZlozeniaStr);
+
+        Sprawa sprawa = new Sprawa(obywatel, sprawaOpis, dataZlozenia, platnoscStatus, platnosc);
+
+        System.out.println("\nStworzono Obywatel: " + obywatel);
+        System.out.println("Stworzono Dokument: " + dokument);
+        System.out.println("Stworzono Urzednik: " + urzednik);
+        System.out.println("Stworzono Platnosc: " + platnosc);
+        System.out.println("Stworzono Sprawa: " + sprawa);
+
+
+
     }
 }
