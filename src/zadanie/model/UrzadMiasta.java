@@ -1,4 +1,7 @@
-package zadanie;
+package zadanie.model;
+
+import zadanie.enumy.Status;
+import zadanie.uslugi.Wnioski;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -15,27 +18,27 @@ public class UrzadMiasta implements Wnioski {
 
     public void dodajSprawe(Sprawa sprawa) {
         sprawy.add(sprawa);
-        System.out.println("Wniosek został pomyślnie dodany!");
     }
 
     public void dodajObywatela(Obywatel obywatel) {
         obywatele.add(obywatel);
-        System.out.println("Obywatel został pomyślnie dodany!");
     }
 
     public void usunSprawe(int id) {
-        if (id < 0 || id >= sprawy.size()) System.out.println("Nie ma takiej sprawy!");
-        else {
+        try {
             sprawy.remove(id);
             System.out.println("Wniosek został pomyślnie usunięty!");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Nie ma takiej sprawy!");
         }
     }
 
     public void usunObywatela(int id) {
-        if (id < 0 || id >= sprawy.size()) System.out.println("Nie ma takiego obywatela!");
-        else {
-            obywatele.get(id);
+        try {
+            obywatele.remove(id);
             System.out.println("Obywatel został pomyślnie usunięty!");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Nie ma takiej sprawy!");
         }
     }
     public Sprawa znajdzSprawe(int id) {
@@ -53,12 +56,6 @@ public class UrzadMiasta implements Wnioski {
         return szukaneSprawy;
     }
 
-    public List<Sprawa> znajdzSprawe(Platnosc platnosc) {
-        List<Sprawa> szukaneSprawy = new ArrayList<>();
-        for (Sprawa sprawa : sprawy) if (sprawa.getPlatnosc() == platnosc) szukaneSprawy.add(sprawa);
-        return szukaneSprawy;
-    }
-
     public List<Sprawa> znajdzSprawe(String opis) {
         List<Sprawa> szukaneSprawy = new ArrayList<>();
         for (Sprawa sprawa : sprawy) if (sprawa.getOpis().equalsIgnoreCase(opis)) szukaneSprawy.add(sprawa);
@@ -71,26 +68,26 @@ public class UrzadMiasta implements Wnioski {
         return szukaneSprawy;
     }
 
-    public List<Obywatel> znajdzObywatela(String string, String szukanyArgument) {
+    public List<Obywatel> znajdzObywatela(String string, int szukanyArgument) {
         List<Obywatel> szukaniObywatele = new ArrayList<>();
-        switch (szukanyArgument.toLowerCase()) {
-            case "imie","imię" -> {
+        switch (szukanyArgument) {
+            case 1 -> {
                 for (Obywatel obywatel : obywatele)
                     if (obywatel.getImie().equalsIgnoreCase(string)) szukaniObywatele.add(obywatel);
             }
-            case "nazwisko" -> {
+            case 2 -> {
                 for (Obywatel obywatel : obywatele)
                     if (obywatel.getNazwisko().equalsIgnoreCase(string)) szukaniObywatele.add(obywatel);
             }
-            case "adres" -> {
+            case 3 -> {
                 for (Obywatel obywatel : obywatele)
                     if (obywatel.getAdres().equalsIgnoreCase(string)) szukaniObywatele.add(obywatel);
             }
-            case "telefon" -> {
+            case 4 -> {
                 for (Obywatel obywatel : obywatele)
-                    if (obywatel.getTelefon().equalsIgnoreCase(string)) szukaniObywatele.add(obywatel);
-            }
-            default -> {
+                    if (obywatel.getTelefon() != null && obywatel.getTelefon().equalsIgnoreCase(string))
+                        szukaniObywatele.add(obywatel);
+            } default -> {
                 return null;
             }
         } return szukaniObywatele;
@@ -98,7 +95,6 @@ public class UrzadMiasta implements Wnioski {
 
     public void przypiszDzial(Sprawa sprawa, String dzial) {
         sprawa.setDzial(dzial);
-        System.out.println("Status sprawy "+sprawa.getOpis()+" została przypiana do działu: "+dzial);
     }
 
     public void sprawdzPostep(Sprawa sprawa) {
@@ -111,6 +107,24 @@ public class UrzadMiasta implements Wnioski {
 
     public List<Obywatel> getObywatele() {
         return obywatele;
+    }
+
+    public void pokazSprawy(List<Sprawa> znalezioneSprawy){
+        if (znalezioneSprawy == null || znalezioneSprawy.isEmpty()){
+            System.out.println("Nie znaleziono spraw.");
+        } else {
+            System.out.println("Znalezione sprawy:");
+            for (Sprawa sprawa : znalezioneSprawy) System.out.println(sprawa);
+        }
+    }
+
+    public void pokazObywatelow(List<Obywatel> znalezieniObywatele){
+        if (znalezieniObywatele == null || znalezieniObywatele.isEmpty()){
+            System.out.println("Nie znaleziono obywatelów.");
+        } else {
+            System.out.println("Znalezieni obywatele:");
+            for (Obywatel obywatel : znalezieniObywatele) System.out.println(obywatel);
+        }
     }
 
     @Override

@@ -1,4 +1,6 @@
-package zadanie;
+package zadanie.uslugi;
+
+import zadanie.model.Sprawa;
 
 public interface Wnioski {
     void dodajSprawe(Sprawa sprawa);

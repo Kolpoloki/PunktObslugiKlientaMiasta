@@ -1,4 +1,6 @@
-package zadanie;
+package zadanie.model;
+
+import zadanie.enumy.Status;
 
 import java.time.LocalDate;
 

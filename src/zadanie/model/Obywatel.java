@@ -1,10 +1,13 @@
-package zadanie;
+package zadanie.model;
+
+import zadanie.uslugi.Dokumentacja;
+import zadanie.enumy.RodzajDokumentu;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Obywatel implements Dokumentacja{
+public class Obywatel implements Dokumentacja {
     private String imie;
     private String nazwisko;
     private String adres;
@@ -45,7 +48,6 @@ public class Obywatel implements Dokumentacja{
 
     public void dodajDokument(Dokument dokument) {
         dokumenty.add(dokument);
-        System.out.println("Dokument został dodany pomyslnie!");
     }
 
     public void sprawdzWaznoscDokumentu(Dokument dokument) {
@@ -53,7 +55,7 @@ public class Obywatel implements Dokumentacja{
         else System.out.println("Dokument stracił ważnośc.");
     }
 
-    public Dokument ZnajdzDokument(RodzajDokumentu rodzajDokumentu) {
+    public Dokument znajdzDokument(RodzajDokumentu rodzajDokumentu) {
         for (Dokument dokument : dokumenty) if (dokument.getRodzajDokumentu() == rodzajDokumentu) return dokument;
         return null;
     }

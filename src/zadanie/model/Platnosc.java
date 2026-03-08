@@ -1,4 +1,8 @@
-package zadanie;
+package zadanie.model;
+
+import zadanie.uslugi.OperacjePlatnosci;
+import zadanie.enumy.RodzajPlatnosci;
+import zadanie.enumy.Status;
 
 public class Platnosc implements OperacjePlatnosci {
     private double ilosc;
@@ -11,17 +15,17 @@ public class Platnosc implements OperacjePlatnosci {
         this.status = status;
     }
 
-    public double sprawdzIlosc() {
+    public double getIlosc() {
         return ilosc;
     }
 
-    public RodzajPlatnosci sprawdzRodzajPlatnosci() {
+    public RodzajPlatnosci getRodzajPlatnosci() {
         return rodzajPlatnosci;
     }
-    public Status sprawdzStatusPlatnosci() {return status;}
+    public Status getStatusPlatnosci() {return status;}
     public void wykonajPlatnosc(){
         System.out.println("Płatność została dokonana.");
-    };
+    }
 
     @Override
     public String toString() {

@@ -1,10 +1,10 @@
-package zadanie;
+package zadanie.enumy;
 
 public enum RodzajDokumentu {
     PASZPORT("Paszport"),
     DOWOD_OSOBISTY("Dowód Osobisty"),
     PRAWO_JAZDY("Prawo Jazdy"),
-    DOWOD_REJESTRACYJNY("Dowód Osobisty"),
+    DOWOD_REJESTRACYJNY("Dowód Rejestracyjny"),
     LEGITYMACJA_SZKOLNA("Legitymacja Szkolna"),
     LEGITYMACJA_STUDENCKA("Legitymacja Studencka");
 
@@ -14,9 +14,9 @@ public enum RodzajDokumentu {
 
     public String getOpis() {return opis;}
 
-    public static boolean czyPoprawny(String opis){
+    public static boolean czyPoprawny(String str){
         for(RodzajDokumentu dokument : RodzajDokumentu.values())
-            if (dokument.getOpis().equalsIgnoreCase(opis)) return true;
+            if (dokument.name().equalsIgnoreCase(str)) return true;
         return false;
     }
 

@@ -1,4 +1,4 @@
-package zadanie;
+package zadanie.model;
 
 public class Urzednik extends Obywatel{
     private String stanowisko;
@@ -18,6 +18,6 @@ public class Urzednik extends Obywatel{
 
     @Override
     public String toString() {
-        return super.toString()+"stanowisko="+stanowisko;
+        return super.toString().replace('}','\'')+", stanowisko="+stanowisko+"}";
     }
 }

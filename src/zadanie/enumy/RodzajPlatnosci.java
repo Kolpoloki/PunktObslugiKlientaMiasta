@@ -1,4 +1,4 @@
-package zadanie;
+package zadanie.enumy;
 
 public enum RodzajPlatnosci {
     KARTA("Karta"),
@@ -11,9 +11,9 @@ public enum RodzajPlatnosci {
 
     public String getOpis() {return opis;}
 
-    public static boolean czyPoprawny(String opis){
+    public static boolean czyPoprawny(String str){
         for(RodzajPlatnosci rodzajPlatnosci : RodzajPlatnosci.values())
-            if (rodzajPlatnosci.getOpis().equalsIgnoreCase(opis)) return true;
+            if (rodzajPlatnosci.name().equalsIgnoreCase(str)) return true;
         return false;
     }
 }
